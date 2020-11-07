@@ -1,11 +1,10 @@
 package com.rapid.order.service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.rapid.controller.ShoppingCartController;
+import com.rapid.controller.ProductDataController;
 import com.rapid.model.Order;
 import com.rapid.model.OrderItem;
 import com.rapid.utils.CheckoutUtil;
@@ -31,6 +30,13 @@ public class OrderService {
 			order.setErrorMessage("The quantity of one of the items exceeds the limit");
 			
 			return order;
+		} else {
+			for(OrderItem item: cartItems) {
+				if(ProductDataController.getProductByName(item.getProduct().getName()) == null) {
+					order.setErrorMessage("The item " + item.getProduct().getName() + " doesn't exist in the catalog");
+					return order;
+				}
+			}
 		}
 		
 		

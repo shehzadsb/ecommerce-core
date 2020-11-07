@@ -7,6 +7,7 @@ import com.rapid.model.Product;
 
 public class ProductDataController {
 
+	
 	private static List<Product> productDataList = new ArrayList<>();
 	
 	public static List<Product> buildProductDataList() {

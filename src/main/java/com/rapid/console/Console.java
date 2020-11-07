@@ -21,7 +21,7 @@ public class Console {
 	public static void main(String[] args) {
 		try {
 			
-			//building product data
+			//building product data during runtime
 			ProductDataController.buildProductDataList();
 
             if (args.length < 1) {
