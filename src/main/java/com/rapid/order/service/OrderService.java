@@ -3,16 +3,20 @@ package com.rapid.order.service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 
 import com.rapid.controller.ProductDataController;
 import com.rapid.controller.ShoppingCartController;
+import com.rapid.model.Customer;
 import com.rapid.model.Order;
 import com.rapid.model.OrderItem;
 import com.rapid.utils.CheckoutUtil;
 
-public class OrderService {
+public class OrderService extends Observable {
 	
 	private static final int MAX_QUANTITY_LIMIT = 1000;
+	
+	private Order order = new Order();
 	
 	public OrderService() {
 		
@@ -20,8 +24,8 @@ public class OrderService {
 	
 	public Order createOrder(List<OrderItem> cartItems) {
 		
-		Order order = new Order();
 		
+		//Order order = new Order();
 		
 		if(cartItems.size() == 0) {
 			order.setErrorMessage("The order was not placed because the cart must have at least 1 item");
@@ -42,6 +46,9 @@ public class OrderService {
 		
 		
 		BigDecimal orderTotal = ShoppingCartController.getOrderTotal();
+		Customer customer = new Customer();
+		customer.setEmail(ShoppingCartController.getCustomerEmail());
+		order.setCustomer(customer);
 		order.setAmount(orderTotal);		
 		order.setOrderNumber(CheckoutUtil.generateRandomNumber());
 		order.setOrderDate(new Date());
@@ -54,10 +61,32 @@ public class OrderService {
 				
 		);
 		
+		
+		
 		return order;
 		
 		
 	}
+	
+	
+	
+	
+
+	public void setOrder(Order order) {
+		this.order = order;
+		
+		setChanged();
+        notifyObservers(order);
+        
+	}
+
+	
+	 public Order getOrder() {
+			return order;
+		}
+	 
+	 
+	
 	
 	private static String getLineItemsFormatted(List<OrderItem> cartItems) {
 		StringBuilder line = new StringBuilder("");

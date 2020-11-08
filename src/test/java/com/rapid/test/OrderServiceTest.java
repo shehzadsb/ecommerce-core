@@ -15,6 +15,7 @@ import com.rapid.controller.ShoppingCartController;
 import com.rapid.model.Order;
 import com.rapid.model.OrderItem;
 import com.rapid.model.Product;
+import com.rapid.notification.MailService;
 import com.rapid.order.service.OrderService;
 
 
@@ -194,6 +195,38 @@ public class OrderServiceTest {
 		    assertThat(order.getErrorMessage()).contains("The quantity of one of the items exceeds the limit");
 		    
 		    
+	  }
+	  
+	  @Test
+	  void testOrderReeivedFromObservableToObserver() {
+		    OrderService orderService = new OrderService();  //Observable
+			MailService mailService = new MailService();     //Observer
+			
+			
+		    //building product data during runtime
+			ProductDataController.buildProductDataList();
+		    
+		    //Sending an empty cart to the order
+		    List<OrderItem> cartItems = new ArrayList<>();
+		    
+		    Product p1 = new Product("Apple", new BigDecimal(0.60));
+		    Product p2 = new Product("Orange", new BigDecimal(0.25));
+		    
+		    
+		    cartItems.add(new OrderItem(p1, 1));
+		    cartItems.add(new OrderItem(p2, 1));
+			
+			Order order = orderService.createOrder(cartItems);
+			
+			orderService.addObserver(mailService);
+			orderService.setOrder(order);
+			
+			    
+			assertThat(mailService.getOrder().getSuccessMessage()).contains("Your order has been created. Your order number is");
+			    
+
+			  
+
 	  }
 
 }

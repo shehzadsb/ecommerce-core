@@ -15,6 +15,9 @@ public class Order {
 	
 	private String errorMessage;
 	private String successMessage;
+	
+	private Customer customer;
+	
 	public String getErrorMessage() {
 		return errorMessage;
 	}
@@ -62,6 +65,12 @@ public class Order {
 	}
 	public void setCartLineItems(List<OrderItem> cartLineItems) {
 		this.cartLineItems = cartLineItems;
+	}
+	public Customer getCustomer() {
+		return customer;
+	}
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 	
 	

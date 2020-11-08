@@ -12,6 +12,7 @@ public class ShoppingCartController {
 	
 	private static List<OrderItem> cartLineItems = new ArrayList<>();
 	
+	private static String customerEmail;
 	
 	public static void addItem(OrderItem orderItem) {
 		
@@ -44,6 +45,14 @@ public class ShoppingCartController {
 		
 		
 		
+	}
+	
+	public static void setCustomerEmail(String email) {
+		customerEmail = email;
+	}
+	
+	public static String getCustomerEmail() {
+		return customerEmail;
 	}
 	
 	public static void addItemsToCart(List<String> itemsList) {
