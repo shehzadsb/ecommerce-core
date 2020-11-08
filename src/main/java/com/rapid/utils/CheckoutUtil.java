@@ -1,10 +1,9 @@
 package com.rapid.utils;
 
-import java.math.BigDecimal;
-import java.util.List;
+
 import java.util.Random;
 
-import com.rapid.model.OrderItem;
+
 
 public class CheckoutUtil {
 	
@@ -17,17 +16,6 @@ public class CheckoutUtil {
 	      return int_random;
 	}
 	
-	public static BigDecimal getOrderTotal(List<OrderItem> cartItems) {
-		
-		BigDecimal total = BigDecimal.ZERO;
-		
-		for(OrderItem item: cartItems) {
-			BigDecimal lineTotal = item.getLineTotal();
-			total = total.add(lineTotal);
-		}
-		
-		return total;
-		
-	}
+	
 
 }

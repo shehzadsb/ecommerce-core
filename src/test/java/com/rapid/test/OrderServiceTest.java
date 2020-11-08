@@ -93,8 +93,7 @@ public class OrderServiceTest {
 	    //building product data during runtime
 		ProductDataController.buildProductDataList();
 	    
-	    //Populating cart items
-	    List<OrderItem> cartItems = new ArrayList<>();
+	    
 	    
 	    Product p1 = new Product("Apple", new BigDecimal(0.60));
 	    Product p2 = new Product("Apple", new BigDecimal(0.60));
@@ -102,17 +101,70 @@ public class OrderServiceTest {
 	    Product p4 = new Product("Orange", new BigDecimal(0.25));
 	    
 	    
-	    cartItems.add(new OrderItem(p1, 1));
-	    cartItems.add(new OrderItem(p2, 1));
-	    cartItems.add(new OrderItem(p3, 1));
-	    cartItems.add(new OrderItem(p4, 1));
+	    ShoppingCartController.addItem(new OrderItem(p1, 1));
+	    ShoppingCartController.addItem(new OrderItem(p2, 1));
+	    ShoppingCartController.addItem(new OrderItem(p3, 1));
+	    ShoppingCartController.addItem(new OrderItem(p4, 1));
+	    
+	    ShoppingCartController.applyOffer1();
+	    ShoppingCartController.applyOffer2();
 	    
 	    
+	    List<OrderItem> cartItems = ShoppingCartController.getCartItems();
 	    Order order = orderService.createOrder(cartItems);
 	    BigDecimal orderTotal = order.getAmount();
 	    
-	    assertThat(orderTotal).isEqualTo(new BigDecimal(2.05).setScale(2, RoundingMode.CEILING));
+	    assertThat(new BigDecimal(2.05).setScale(2, RoundingMode.CEILING)).isEqualTo(orderTotal);
 
+	  }
+	
+	
+	@Test
+	  void validateOrderLineItemQtyAndTotals() {
+	    final OrderService orderService = new OrderService();
+	    
+	    
+	    ShoppingCartController.clearCart();
+	    
+	    List<String> itemsArray = new ArrayList<>();
+	    itemsArray.add("Apple");
+	    itemsArray.add("Apple");
+	    itemsArray.add("Apple");
+	    itemsArray.add("Orange");
+	    itemsArray.add("Orange");
+	    
+	    ShoppingCartController.addItemsToCart(itemsArray);  
+	    List<OrderItem> cartItems = ShoppingCartController.getCartItems();
+	    
+	    
+	    Order order = orderService.createOrder(cartItems);
+	    List<OrderItem> orderCartItems = order.getCartLineItems();
+	    
+	    Integer appleQty = null;
+	    BigDecimal appleLineTotal = null;
+	    for(OrderItem item: orderCartItems) {
+			if(item.getProduct().getName().equals("Apple")) {
+				appleQty = item.getQuantity();
+				appleLineTotal = item.getLineTotal();
+			}
+		}
+	    
+	    assertThat(new Integer(6)).isEqualTo(appleQty);
+	    assertThat(new BigDecimal(1.8).setScale(1, RoundingMode.FLOOR)).isEqualTo(appleLineTotal.setScale(1, RoundingMode.CEILING));
+		
+	    Integer orangeQty = null;
+	    BigDecimal orangeLineTotal = null;
+	    for(OrderItem item: orderCartItems) {
+			if(item.getProduct().getName().equals("Orange")) {
+				orangeQty = item.getQuantity();
+				orangeLineTotal = item.getLineTotal();
+			}
+		}
+	    
+	    assertThat(new Integer(3)).isEqualTo(orangeQty);
+	    assertThat(new BigDecimal(0.50).setScale(1, RoundingMode.FLOOR)).isEqualTo(orangeLineTotal.setScale(1, RoundingMode.CEILING));
+			
+	    
 	  }
 	
 	  

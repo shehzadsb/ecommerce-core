@@ -21,6 +21,10 @@ public class Console {
 	public static void main(String[] args) {
 		try {
 			
+			int a = 2;
+			int b = a % 3;
+			
+			
 			//building product data during runtime
 			ProductDataController.buildProductDataList();
 
@@ -40,8 +44,8 @@ public class Console {
             		}
             		
             			
-            		addItemsToCart(itemsList);      
-            		System.out.println(itemsList.toString() + " items added to the cart.");
+            		ShoppingCartController.addItemsToCart(itemsList);      
+            		//System.out.println(itemsList.toString() + " items added to the cart.");
             		
             		placeOrder();
             		
@@ -83,22 +87,7 @@ public class Console {
 
 	}
 	
-	private static void addItemsToCart(List<String> itemsList) {
-		
-		for(String item: itemsList) {
-		
-			Product productToAdd = ProductDataController.getProductByName(item);
-			
-			if(productToAdd != null) {
-				OrderItem orderItem = new OrderItem();
-				orderItem.setQuantity(1);
-				orderItem.setProduct(new Product(item, productToAdd.getPrice()));
-				ShoppingCartController.addItem(orderItem);
-				
-			}
-		}
-		
-	}
+	
 	
 	
 	 private static void placeOrder() throws Exception {
@@ -116,6 +105,8 @@ public class Console {
 		} else {
 			System.err.println("Unknown error while placing an order");
 		}
+		
+		
 	}
 	 
 	

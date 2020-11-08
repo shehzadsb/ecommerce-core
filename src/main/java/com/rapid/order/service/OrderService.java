@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.rapid.controller.ProductDataController;
+import com.rapid.controller.ShoppingCartController;
 import com.rapid.model.Order;
 import com.rapid.model.OrderItem;
 import com.rapid.utils.CheckoutUtil;
@@ -40,15 +41,34 @@ public class OrderService {
 		}
 		
 		
-		BigDecimal orderTotal = CheckoutUtil.getOrderTotal(cartItems);
+		BigDecimal orderTotal = ShoppingCartController.getOrderTotal();
 		order.setAmount(orderTotal);		
 		order.setOrderNumber(CheckoutUtil.generateRandomNumber());
 		order.setOrderDate(new Date());
-		order.setSuccessMessage("Your order has been created. Your order number is " + order.getOrderNumber() + " and order total is " + order.getAmount());
+		order.setCartLineItems(cartItems);
+		order.setSuccessMessage("Your order has been created. Your order number is " 
+		+ order.getOrderNumber() + " and order total is " + order.getAmount()
+		+ "\nHere are the order details "
+		+ getLineItemsFormatted(cartItems)
+		
+				
+		);
 		
 		return order;
 		
 		
+	}
+	
+	private static String getLineItemsFormatted(List<OrderItem> cartItems) {
+		StringBuilder line = new StringBuilder("");
+		int count = 1;
+		for(OrderItem item: cartItems) {
+			
+			line.append("\n" + count + ")  Name: " + item.getProduct().getName() + ", Qty: " + item.getQuantity() + ", Line Total: " + item.getLineTotal() );
+			count++;
+		}
+		
+		return line.toString();
 	}
 	
 	private boolean isQuantityExceedsMaxLimit(List<OrderItem> cartItems) {

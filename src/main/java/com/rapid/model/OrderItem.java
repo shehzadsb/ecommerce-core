@@ -44,9 +44,9 @@ public class OrderItem {
 		this.description = description;
 	}
 	public BigDecimal getLineTotal() {
-		BigDecimal total = this.product.getPrice().multiply(new BigDecimal(this.quantity));
+		/*BigDecimal total = this.product.getPrice().multiply(new BigDecimal(this.quantity));
 		this.lineTotal = total;
-		this.lineTotal = lineTotal.setScale(2, RoundingMode.CEILING);
+		this.lineTotal = lineTotal.setScale(2, RoundingMode.CEILING);*/
 		return this.lineTotal;
 	}
 	public void setLineTotal(BigDecimal lineTotal) {
