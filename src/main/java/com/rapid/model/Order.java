@@ -10,6 +10,7 @@ public class Order {
 	private Date orderDate;
 	private String transactionId;
 	private String statusCode;  
+	private String estimatedDeliveryTime;
 	private BigDecimal amount;
 	private List<OrderItem> cartLineItems;
 	
@@ -71,6 +72,12 @@ public class Order {
 	}
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+	public String getEstimatedDeliveryTime() {
+		return estimatedDeliveryTime;
+	}
+	public void setEstimatedDeliveryTime(String estimatedDeliveryTime) {
+		this.estimatedDeliveryTime = estimatedDeliveryTime;
 	}
 	
 	

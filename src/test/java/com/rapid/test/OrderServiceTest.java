@@ -41,46 +41,57 @@ public class OrderServiceTest {
 	    final OrderService orderService = new OrderService();
 	    //building product data during runtime
 		ProductDataController.buildProductDataList();
+		
+		ShoppingCartController.clearCart();
 	    
-	    //Sending an empty cart to the order
-	    List<OrderItem> cartItems = new ArrayList<>();
-	    
-	    Product p1 = new Product("Apple", new BigDecimal(0.60));
-	    Product p2 = new Product("Orange", new BigDecimal(0.25));
-	    
-	    
-	    cartItems.add(new OrderItem(p1, 1));
-	    cartItems.add(new OrderItem(p2, 1));
+	  
+	 	Product p1 = new Product("Apple", new BigDecimal(0.60), 5);
+	    Product p2 = new Product("Orange", new BigDecimal(0.25), 3);
 	    
 	    
+	    ShoppingCartController.addItem(new OrderItem(p1, 1));
+	    ShoppingCartController.addItem(new OrderItem(p2, 1));
+	   
+	    ShoppingCartController.applyOffer1();
+	    ShoppingCartController.applyOffer2();
+		    
 	    
-	    Order order = orderService.createOrder(cartItems);
+	    Order order = orderService.createOrder(ShoppingCartController.getCartItems());
 	    
 	    assertThat(order.getSuccessMessage()).contains("Your order has been created. Your order number is");
 	    
 
 	   
 	  }
+	
+	
+	
+	
+	
 
 	@Test
 	  void invalidOrder_ItemDoesntExist() {
 	    final OrderService orderService = new OrderService();
 	    //building product data during runtime
 		ProductDataController.buildProductDataList();
+	   
+		
+		ShoppingCartController.clearCart();
 	    
-	    //Sending an empty cart to the order
-	    List<OrderItem> cartItems = new ArrayList<>();
-	    
-	    Product p1 = new Product("Banana", new BigDecimal(0.40));
-	    Product p2 = new Product("Peach", new BigDecimal(0.35));
-	    
-	    
-	    cartItems.add(new OrderItem(p1, 1));
-	    cartItems.add(new OrderItem(p2, 1));
+	    Product p1 = new Product("Banana", new BigDecimal(0.60), 5);
+	    Product p2 = new Product("Peach", new BigDecimal(0.60), 3);
+	   
 	    
 	    
+	    ShoppingCartController.addItem(new OrderItem(p1, 1));
+	    ShoppingCartController.addItem(new OrderItem(p2, 1));
 	    
-	    Order order = orderService.createOrder(cartItems);
+	    ShoppingCartController.applyOffer1();
+	    ShoppingCartController.applyOffer2();
+	    
+	    
+	    
+	    Order order = orderService.createOrder(ShoppingCartController.getCartItems());
 	    
 	    assertThat(order.getErrorMessage()).contains("doesn't exist in the catalog");
 
@@ -94,12 +105,12 @@ public class OrderServiceTest {
 	    //building product data during runtime
 		ProductDataController.buildProductDataList();
 	    
+	    ShoppingCartController.clearCart();
 	    
-	    
-	    Product p1 = new Product("Apple", new BigDecimal(0.60));
-	    Product p2 = new Product("Apple", new BigDecimal(0.60));
-	    Product p3 = new Product("Apple", new BigDecimal(0.60));
-	    Product p4 = new Product("Orange", new BigDecimal(0.25));
+	    Product p1 = new Product("Apple", new BigDecimal(0.60), 5);
+	    Product p2 = new Product("Apple", new BigDecimal(0.60), 5);
+	    Product p3 = new Product("Apple", new BigDecimal(0.60), 5);
+	    Product p4 = new Product("Orange", new BigDecimal(0.25), 3);
 	    
 	    
 	    ShoppingCartController.addItem(new OrderItem(p1, 1));
@@ -198,7 +209,7 @@ public class OrderServiceTest {
 	  }
 	  
 	  @Test
-	  void testOrderReeivedFromObservableToObserver() {
+	  void testOrderReceivedFromObservableToObserver() {
 		    OrderService orderService = new OrderService();  //Observable
 			MailService mailService = new MailService();     //Observer
 			
@@ -209,8 +220,8 @@ public class OrderServiceTest {
 		    //Sending an empty cart to the order
 		    List<OrderItem> cartItems = new ArrayList<>();
 		    
-		    Product p1 = new Product("Apple", new BigDecimal(0.60));
-		    Product p2 = new Product("Orange", new BigDecimal(0.25));
+		    Product p1 = new Product("Apple", new BigDecimal(0.60), 5);
+		    Product p2 = new Product("Orange", new BigDecimal(0.25), 3);
 		    
 		    
 		    cartItems.add(new OrderItem(p1, 1));
@@ -228,5 +239,40 @@ public class OrderServiceTest {
 			  
 
 	  }
+	  
+	  @Test
+	  void invalidOrderStocksRunout() {
+	    final OrderService orderService = new OrderService();
+	    //building product data during runtime
+	    ProductDataController.buildProductDataList();
+	    
+	    ShoppingCartController.clearCart();
+	    
+	    
+	    Product p1 = new Product("Apple", new BigDecimal(0.60), 5);
+	    Product p2 = new Product("Apple", new BigDecimal(0.60), 5);
+	    Product p3 = new Product("Apple", new BigDecimal(0.60), 5);
+	    Product p4 = new Product("Orange", new BigDecimal(0.25), 3);
+	    
+	    
+	    ShoppingCartController.addItem(new OrderItem(p1, 1));
+	    ShoppingCartController.addItem(new OrderItem(p2, 1));
+	    ShoppingCartController.addItem(new OrderItem(p3, 1));
+	    ShoppingCartController.addItem(new OrderItem(p4, 1));
+	    
+	    ShoppingCartController.applyOffer1();
+	    ShoppingCartController.applyOffer2();
+	    
+	    
+	    List<OrderItem> cartItems = ShoppingCartController.getCartItems();
+	    
+	    Order order = orderService.createOrder(cartItems);
+	    
+	    assertThat(order.getErrorMessage()).contains("Your failed because we are running out of stock.");
+	    
+
+	   
+	  }
+
 
 }

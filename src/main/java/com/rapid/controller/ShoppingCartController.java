@@ -64,7 +64,7 @@ public class ShoppingCartController {
 			if(productToAdd != null) {
 				OrderItem orderItem = new OrderItem();
 				orderItem.setQuantity(1);
-				orderItem.setProduct(new Product(item, productToAdd.getPrice()));
+				orderItem.setProduct(new Product(item, productToAdd.getPrice(),productToAdd.getQuantityInStock() ));
 				addItem(orderItem);
 				
 			}

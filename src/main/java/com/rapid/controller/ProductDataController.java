@@ -11,8 +11,8 @@ public class ProductDataController {
 	private static List<Product> productDataList = new ArrayList<>();
 	
 	public static List<Product> buildProductDataList() {
-		productDataList.add(new Product(1, "Apple", new BigDecimal(0.60)));
-		productDataList.add(new Product(2, "Orange", new BigDecimal(0.25)));
+		productDataList.add(new Product("Apple", new BigDecimal(0.60), 5));
+		productDataList.add(new Product("Orange", new BigDecimal(0.25), 3));
 		
 		return productDataList;
 	}

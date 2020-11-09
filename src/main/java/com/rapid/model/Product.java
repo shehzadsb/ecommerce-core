@@ -6,7 +6,7 @@ public class Product {
 	private Integer productId;
 	private String name;
 	private BigDecimal price;
-	
+	private Integer quantityInStock;
 	
 	public Product(Integer productId, String name, BigDecimal price) {
 		this.productId = productId;
@@ -17,8 +17,14 @@ public class Product {
 	public Product(String name, BigDecimal price) {
 		this.name = name;
 		this.price = price;
+		
 	}
 
+	public Product(String name, BigDecimal price, Integer quantityInStock) {
+		this.name = name;
+		this.price = price;
+		this.quantityInStock = quantityInStock;
+	}
 	
 	public Integer getProductId() {
 		return productId;
@@ -42,6 +48,14 @@ public class Product {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	public Integer getQuantityInStock() {
+		return quantityInStock;
+	}
+
+	public void setQuantityInStock(Integer quantityInStock) {
+		this.quantityInStock = quantityInStock;
 	}
 
 	

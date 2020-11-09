@@ -48,8 +48,6 @@ public class Console {
             		for(int i=1; i<args.length - 1; i++) {
             			itemsList.add(args[i]);
             		}
-            		
-            		
             			
             		ShoppingCartController.addItemsToCart(itemsList);      
             		//System.out.println(itemsList.toString() + " items added to the cart.");
@@ -66,21 +64,9 @@ public class Console {
             	
             }
             else if (args[0].equals("clear-cart")) {
-            	
+            	ShoppingCartController.clearCart();
             }
-            else if (args[0].equals("place-order")) {
-            	List<OrderItem> cartItems = ShoppingCartController.getCartItems();
-            	if (cartItems.size() > 1) {
-            		
-            		
-            		placeOrder();
-            	}
-            	else 
-            	{
-                    System.err.println("can't place the order because cart is empty");
-            	}
-                
-            } 
+            
             else if (args[0].equals("help")) {
                 help();
             } else {
