@@ -78,6 +78,7 @@ public class OrderService extends Observable {
 		order.setOrderDate(new Date());
 		order.setCartLineItems(cartItems);
 		order.setStatusCode("S");  //success
+		order.setEstimatedDeliveryTime("3 to 7 days");
 		order.setSuccessMessage("Your order has been created. Your order number is " 
 		+ order.getOrderNumber() + " and order total is " + order.getAmount()
 		+ "\nHere are the order details "
