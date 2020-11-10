@@ -36,14 +36,29 @@ mvn package
 
 The maven command will create a JAR file ecommerce-core-0.0.1-SNAPSHOT-jar-with-dependencies.jar in /target directory.
 
-## 2.	How to Run the app
+## How to Run the app
 java -jar ecommerce-core-0.0.1-SNAPSHOT-jar-with-dependencies.jar add-items-to-cart-and-place-order Apple Apple Orange Orange  the.shahzad@outlook.com
 
 
-## 3.	How to other unit tests
+## How to other unit tests
 mvn test
 
 
-## 4. How to get help
+## How to get help
 
 java -jar ecommerce-core-0.0.1-SNAPSHOT-jar-with-dependencies.jar help
+
+## How to start kafka zookeeper server
+zookeeper-server-start config/zookeeper.properties
+
+## How to start kafka bootstrap server
+kafka-server-start config/server.properties
+
+## How to create kafka console consumer
+kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic order_submitted
+
+
+
+
+
+
